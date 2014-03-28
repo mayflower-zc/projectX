@@ -13,6 +13,6 @@ cat ~/.ssh/id_rsa.pub
 $ git config --global user.name "zhengcong"
 $ git config --global user.email zhengcong073@qq.com
 
-========
 源码下载路径
+==========
 git clone git@github.com:mayflower-zc/projectX.git
