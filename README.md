@@ -10,7 +10,7 @@ cat ~/.ssh/id_rsa.pub
 
 设置用户名和密码
 ========
-用git config设置名字和邮箱地址
+用git config设置名字和邮箱地址<br/>
 `
 $ git config --global user.name "zhengcong"
 `
