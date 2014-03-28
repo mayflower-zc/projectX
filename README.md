@@ -13,6 +13,8 @@ cat ~/.ssh/id_rsa.pub
 用git config设置名字和邮箱地址
 `
 $ git config --global user.name "zhengcong"
+`
+`
 $ git config --global user.email zhengcong073@qq.com
 `
 
