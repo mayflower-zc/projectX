@@ -1,7 +1,10 @@
 package com.smarthome.servlet;
 
 
+import com.smarthome.service.CoreService;
 import com.smarthome.util.SignUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -14,6 +17,8 @@ import java.io.PrintWriter;
  * Created by zhengcong on 14-4-17.
  */
 public class CoreServlet extends HttpServlet {
+    private static Logger log = LoggerFactory.getLogger(CoreServlet.class);
+
     /**
      * 确认请求来自微信服务器
      *
@@ -34,7 +39,7 @@ public class CoreServlet extends HttpServlet {
         String echostr = req.getParameter("echostr");
 
         //打印参数
-        System.out.printf("doGet {signature:%s , timestamp:%s , nonce:%s , echostr:%s}", singnature, timestamp, nonce, echostr);
+        log.debug("signature:{} timestamp:{} nonce:{} echostr:{}", new Object[]{singnature, timestamp, nonce, echostr});
 
         PrintWriter out = resp.getWriter();
         if (SignUtil.checkSignature(singnature, timestamp, nonce)) {
@@ -48,6 +53,16 @@ public class CoreServlet extends HttpServlet {
      * 处理微信服务器发来的消息
      */
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
+        //将请求、相应的编码均设置为UTF-8(防止中文乱码)
+        req.setCharacterEncoding("UTF-8");
+        resp.setHeader("Content-type", "text/html;charset=UTF-8");
+        resp.setCharacterEncoding("UTF-8");
+
+        //调用核心业务类接收消息、处理消息
+        String respMessage = CoreService.processRequest(req);
+
+        PrintWriter out = resp.getWriter();
+        out.write(respMessage);
+        out.close();
     }
 }

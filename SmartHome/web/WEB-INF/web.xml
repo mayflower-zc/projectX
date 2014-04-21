@@ -5,6 +5,15 @@
 		  http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
          version="2.5">
     <servlet>
+        <servlet-name>log4j-init</servlet-name>
+        <servlet-class>com.smarthome.servlet.Log4jInitServlet</servlet-class>
+        <init-param>
+            <param-name>log4j</param-name>
+            <param-value>WEB-INF/classes/log4j.properties</param-value>
+        </init-param>
+        <load-on-startup>0</load-on-startup>
+    </servlet>
+    <servlet>
         <servlet-name>coreServlet</servlet-name>
         <servlet-class>
             com.smarthome.servlet.CoreServlet
