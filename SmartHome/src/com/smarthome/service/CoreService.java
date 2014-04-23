@@ -112,7 +112,33 @@ public class CoreService {
                 }
                 // 自定义菜单点击事件
                 else if (eventType.equals(MessageUtil.EVENT_TYPE_CLICK)) {
-                    // TODO 自定义菜单权没有开放，暂不处理该类消息
+                    // 事件KEY值，与创建自定义菜单时指定的KEY值对应
+                    String eventKey = requestMap.get("EventKey");
+
+                    if (eventKey.equals("11")) {
+                        respContent = "天气预报菜单项被点击！";
+                    } else if (eventKey.equals("12")) {
+                        respContent = "公交查询菜单项被点击！";
+                    } else if (eventKey.equals("13")) {
+                        respContent = "周边搜索菜单项被点击！";
+                    } else if (eventKey.equals("14")) {
+                        respContent = TodayInHistoryService.getTodayInHistoryInfo();
+                    } else if (eventKey.equals("21")) {
+                        respContent = "歌曲点播菜单项被点击！";
+                    } else if (eventKey.equals("22")) {
+                        respContent = "经典游戏菜单项被点击！";
+                    } else if (eventKey.equals("23")) {
+                        respContent = "美女电台菜单项被点击！";
+                    } else if (eventKey.equals("24")) {
+                        respContent = "聊天唠嗑菜单项被点击！";
+                    } else if (eventKey.equals("31")) {
+                        respContent = "Q友圈菜单项被点击！";
+                    } else if (eventKey.equals("32")) {
+                        respContent = "电影排行榜菜单项被点击！";
+                    } else if (eventKey.equals("33")) {
+                        respContent = "幽默笑话菜单项被点击！";
+                    }
+
                 }
             }
 
