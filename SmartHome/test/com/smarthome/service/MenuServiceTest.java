@@ -69,19 +69,10 @@ public class MenuServiceTest {
         btn24.setKey("24");
 
         CommonButton btn31 = new CommonButton();
-        btn31.setName("Q友圈");
+        btn31.setName("Q译通");
         btn31.setType("click");
         btn31.setKey("31");
 
-        CommonButton btn32 = new CommonButton();
-        btn32.setName("电影排行榜");
-        btn32.setType("click");
-        btn32.setKey("32");
-
-        CommonButton btn33 = new CommonButton();
-        btn33.setName("幽默笑话");
-        btn33.setType("click");
-        btn33.setKey("33");
 
         ComplexButton mainBtn1 = new ComplexButton();
         mainBtn1.setName("生活助手");
@@ -93,7 +84,7 @@ public class MenuServiceTest {
 
         ComplexButton mainBtn3 = new ComplexButton();
         mainBtn3.setName("更多体验");
-        mainBtn3.setSub_button(new CommonButton[]{btn31, btn32, btn33});
+        mainBtn3.setSub_button(new CommonButton[]{btn31});
 
         /**
          * 这是公众号xiaoqrobot目前的菜单结构，每个一级菜单都有二级菜单项<br>

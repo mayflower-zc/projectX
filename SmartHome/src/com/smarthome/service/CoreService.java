@@ -56,7 +56,7 @@ public class CoreService {
             //文本消息
             if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_TEXT)) {
                 //文本消息内容
-                String content = requestMap.get("Content");
+                String content = requestMap.get("Content").trim();
                 if (QQFaceUtil.isQqFace(content)) {
                     respContent = content;
                 } else if (TextMessageUtil.WEATHER.equals(content)) {
@@ -75,6 +75,14 @@ public class CoreService {
                     respContent = TextMessageUtil.getChatMenu();
                 } else if (TextMessageUtil.HELP.equals(content)) {
                     respContent = TextMessageUtil.getMainMenu();
+                } else if (content.startsWith("翻译")) {
+                    String keyWord = content.replaceAll("^翻译", "").trim();
+                    if ("".equals(keyWord)) {
+                        respContent = TextMessageUtil.getTranslateUsage
+                                ();
+                    } else {
+                        respContent = BaiduTranslateService.translate(keyWord);
+                    }
                 } else {
 //                    respContent = "您发送的是文本消息！";
                     respContent = QQFaceUtil.emoji(0x1F6B2);
@@ -132,11 +140,7 @@ public class CoreService {
                     } else if (eventKey.equals("24")) {
                         respContent = "聊天唠嗑菜单项被点击！";
                     } else if (eventKey.equals("31")) {
-                        respContent = "Q友圈菜单项被点击！";
-                    } else if (eventKey.equals("32")) {
-                        respContent = "电影排行榜菜单项被点击！";
-                    } else if (eventKey.equals("33")) {
-                        respContent = "幽默笑话菜单项被点击！";
+                        respContent = TextMessageUtil.getTranslateUsage();
                     }
 
                 }
