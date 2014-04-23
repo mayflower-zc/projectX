@@ -152,4 +152,19 @@ public class TextMessageUtil {
         buffer.append("回复“?”显示主菜单");
         return buffer.toString();
     }
+
+    /**
+     * 歌曲使用指南
+     *
+     * @return
+     */
+    public static String getMusicUsage() {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("歌曲点播操作指南").append("\n\n");
+        buffer.append("回复：歌曲+歌名").append("\n");
+        buffer.append("例如：歌曲存在").append("\n");
+        buffer.append("或者：歌曲存在@汪峰").append("\n\n");
+        buffer.append("回复“?”显示主菜单");
+        return buffer.toString();
+    }
 }

@@ -1,5 +1,7 @@
 package com.smarthome.service;
 
+import com.smarthome.message.resp.Music;
+import com.smarthome.message.resp.MusicMessage;
 import com.smarthome.message.resp.TextMessage;
 import com.smarthome.util.MessageUtil;
 import com.smarthome.util.QQFaceUtil;
@@ -26,7 +28,8 @@ public class CoreService {
      * @return
      */
     public static String processRequest(HttpServletRequest request) {
-        String respMessage = null;
+        String respTextMessage = null;
+        String respMusicMessage = null;
         try {
             //默认返回的文本消息内容
             String respContent = "请求处理异常，请稍后尝试";
@@ -41,10 +44,6 @@ public class CoreService {
             //消息类型
             String msgType = requestMap.get("MsgType");
 
-            //打印日志
-            log.debug("processRequest p");
-            System.out.printf("CoreService.processRequest {FromUserName:%s , ToUserName:%s , MsgType:%s }\n", fromUserName, toUserName, msgType);
-
             //回复文本消息
             TextMessage textMessage = new TextMessage();
             textMessage.setToUserName(fromUserName);
@@ -57,6 +56,9 @@ public class CoreService {
             if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_TEXT)) {
                 //文本消息内容
                 String content = requestMap.get("Content").trim();
+                //打印日志
+                log.debug("FromUserName:{}, ToUserName:{}, MsgType:{}, Content:{} ", new Object[]{fromUserName, toUserName, msgType, content});
+
                 if (QQFaceUtil.isQqFace(content)) {
                     respContent = content;
                 } else if (TextMessageUtil.WEATHER.equals(content)) {
@@ -75,6 +77,42 @@ public class CoreService {
                     respContent = TextMessageUtil.getChatMenu();
                 } else if (TextMessageUtil.HELP.equals(content)) {
                     respContent = TextMessageUtil.getMainMenu();
+                } else if (content.startsWith("歌曲")) {
+                    String keyWord = content.replaceAll("^歌曲[\\+ ~!@#%^-_=]?", "");
+                    if ("".equals(keyWord)) {
+                        respContent = TextMessageUtil.getMusicUsage();
+                    } else {
+                        String[] kwArr = keyWord.split("@");
+                        //歌曲名称
+                        String musicTitle = kwArr[0];
+                        //演唱者默认为空
+                        String musicAuthor = "";
+                        if (2 == kwArr.length)
+                            musicAuthor = kwArr[1];
+
+                        //搜索音乐
+                        Music music = BaiduMusicService.searchMusic(musicTitle, musicAuthor);
+                        //未搜索到音乐
+                        if (null == music) {
+                            respContent = "对不起，没有找到你想听的歌曲<" + musicTitle + ">。";
+                        } else {
+                            // 音乐消息
+                            MusicMessage musicMessage = new MusicMessage();
+                            musicMessage.setToUserName(fromUserName);
+                            musicMessage.setFromUserName(toUserName);
+                            musicMessage.setCreateTime(new Date().getTime());
+                            musicMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_MUSIC);
+                            musicMessage.setMusic(music);
+                            respMusicMessage = MessageUtil.musicMessageToXml(musicMessage);
+                        }
+                    }
+
+                    //未搜索到音乐时返回使用指南
+                    if (null == respMusicMessage) {
+                        if (null == respContent)
+                            respContent = TextMessageUtil.getMusicUsage();
+                    }
+
                 } else if (content.startsWith("翻译")) {
                     String keyWord = content.replaceAll("^翻译", "").trim();
                     if ("".equals(keyWord)) {
@@ -132,7 +170,7 @@ public class CoreService {
                     } else if (eventKey.equals("14")) {
                         respContent = TodayInHistoryService.getTodayInHistoryInfo();
                     } else if (eventKey.equals("21")) {
-                        respContent = "歌曲点播菜单项被点击！";
+                        respContent = TextMessageUtil.getMusicUsage();
                     } else if (eventKey.equals("22")) {
                         respContent = "经典游戏菜单项被点击！";
                     } else if (eventKey.equals("23")) {
@@ -147,10 +185,16 @@ public class CoreService {
             }
 
             textMessage.setContent(respContent);
-            respMessage = MessageUtil.textMessageToXml(textMessage);
+            respTextMessage = MessageUtil.textMessageToXml(textMessage);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return respMessage;
+
+        if (null != respMusicMessage) {
+            return respMusicMessage;
+        } else {
+            return respTextMessage;
+        }
+
     }
 }
