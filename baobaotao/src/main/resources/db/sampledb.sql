@@ -1,6 +1,6 @@
-DROP DATABASE IF EXISTS sampledb17;
-CREATE DATABASE sampledb17 DEFAULT CHARACTER SET utf8;
-USE sampledb17;
+DROP DATABASE IF EXISTS baobaotao;
+CREATE DATABASE baobaotao DEFAULT CHARACTER SET utf8;
+USE baobaotao;
 
 
 /*==============================================================*/
@@ -28,10 +28,10 @@ drop table if exists t_user;
 drop table if exists t_login_log;
 
 CREATE TABLE `t_board` (
-  `board_id` int(11) NOT NULL auto_increment COMMENT 'ÂÛÌ³°æ¿éID',
-  `board_name` varchar(150) NOT NULL default '' COMMENT 'ÂÛÌ³°æ¿éÃû',
-  `board_desc` varchar(255) default NULL COMMENT 'ÂÛÌ³°æ¿éÃèÊö',
-  `topic_num` int(11) NOT NULL default '0' COMMENT 'Ìû×ÓÊıÄ¿',
+  `board_id` int(11) NOT NULL auto_increment COMMENT 'è®ºå›ç‰ˆå—ID',
+  `board_name` varchar(150) NOT NULL default '' COMMENT 'è®ºå›ç‰ˆå—å',
+  `board_desc` varchar(255) default NULL COMMENT 'è®ºå›ç‰ˆå—æè¿°',
+  `topic_num` int(11) NOT NULL default '0' COMMENT 'å¸–å­æ•°ç›®',
   PRIMARY KEY  (`board_id`),
   KEY `AK_Board_NAME` (`board_name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
@@ -40,12 +40,12 @@ CREATE TABLE `t_board` (
 # Dumping data for table t_board
 #
 
-INSERT INTO `t_board` VALUES (1,'Óı¶ù','ÅàÓı½¡¿µ´ÏÃ÷±¦±´£¬·ÖÏíÄúµÄ¾­ÑéĞÄµÃ\r\n',8);
-INSERT INTO `t_board` VALUES (2,'\r\nÍ¯ÑÔ','´Ó±¦±¦Ñ¾Ñ¾Ñ§Óï¿ªÊ¼£¬×ÜÊÇ»áÃ°³öºÜ¶àÆæË¼ÃîÏë£¬×ÜÊÇ»áËµ³öÒ»Ğ©ÁîÄã¿ªĞÄ´óĞ¦µÄ»°£¬ÈÃÎÒÃÇÒ»Æğ¼ÇÂ¼£¬Ò»Æğ·ÖÏí',0);
-INSERT INTO `t_board` VALUES (3,'¶ù¸ç','¾­µä´«³Ğ¡ª¡ª¹Å´ú¶ù¸è¾«Ñ¡ ',0);
-INSERT INTO `t_board` VALUES (4,' ¹ÊÊÂ','½²¹ÊÊÂ,¹ÊÊÂÈÃ±¦±¦Ñ§»á×Ô¼º½²¹ÊÊÂ',3);
+INSERT INTO `t_board` VALUES (1,'è‚²å„¿','åŸ¹è‚²å¥åº·èªæ˜å®è´ï¼Œåˆ†äº«æ‚¨çš„ç»éªŒå¿ƒå¾—\r\n',8);
+INSERT INTO `t_board` VALUES (2,'\r\nç«¥è¨€','ä»å®å®ä¸«ä¸«å­¦è¯­å¼€å§‹ï¼Œæ€»æ˜¯ä¼šå†’å‡ºå¾ˆå¤šå¥‡æ€å¦™æƒ³ï¼Œæ€»æ˜¯ä¼šè¯´å‡ºä¸€äº›ä»¤ä½ å¼€å¿ƒå¤§ç¬‘çš„è¯ï¼Œè®©æˆ‘ä»¬ä¸€èµ·è®°å½•ï¼Œä¸€èµ·åˆ†äº«',0);
+INSERT INTO `t_board` VALUES (3,'å„¿å“¥','ç»å…¸ä¼ æ‰¿â€”â€”å¤ä»£å„¿æ­Œç²¾é€‰ ',0);
+INSERT INTO `t_board` VALUES (4,' æ•…äº‹','è®²æ•…äº‹,æ•…äº‹è®©å®å®å­¦ä¼šè‡ªå·±è®²æ•…äº‹',3);
 INSERT INTO `t_board` VALUES (7,'dddddddddddd','ddddddddddddddddddddddddddddddd',0);
-INSERT INTO `t_board` VALUES (8,'Óı¶ù','Óı¶ù¾­Ñé~~',0);
+INSERT INTO `t_board` VALUES (8,'è‚²å„¿','è‚²å„¿ç»éªŒ~~',0);
 
 #
 # Source for table t_board_manager
@@ -55,7 +55,7 @@ CREATE TABLE `t_board_manager` (
   `board_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   PRIMARY KEY  (`board_id`,`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='ÂÛÌ³¹ÜÀíÔ±';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='è®ºå›ç®¡ç†å‘˜';
 
 #
 # Dumping data for table t_board_manager
@@ -88,56 +88,56 @@ CREATE TABLE `t_login_log` (
 #
 
 CREATE TABLE `t_post` (
-  `post_id` int(11) NOT NULL auto_increment COMMENT 'Ìû×ÓID',
-  `board_id` int(11) NOT NULL default '0' COMMENT 'ÂÛÌ³ID',
-  `topic_id` int(11) NOT NULL default '0' COMMENT '»°ÌâID',
-  `user_id` int(11) NOT NULL default '0' COMMENT '·¢±íÕßID',
-  `post_type` tinyint(4) NOT NULL default '2' COMMENT 'Ìû×ÓÀàĞÍ 1:Ö÷Ìû×Ó 2:»Ø¸´Ìû×Ó',
-  `post_title` varchar(50) NOT NULL COMMENT 'Ìû×Ó±êÌâ',
-  `post_text` text NOT NULL COMMENT 'Ìû×ÓÄÚÈİ',
-  `create_time` date NOT NULL COMMENT '´´½¨Ê±¼ä',
+  `post_id` int(11) NOT NULL auto_increment COMMENT 'å¸–å­ID',
+  `board_id` int(11) NOT NULL default '0' COMMENT 'è®ºå›ID',
+  `topic_id` int(11) NOT NULL default '0' COMMENT 'è¯é¢˜ID',
+  `user_id` int(11) NOT NULL default '0' COMMENT 'å‘è¡¨è€…ID',
+  `post_type` tinyint(4) NOT NULL default '2' COMMENT 'å¸–å­ç±»å‹ 1:ä¸»å¸–å­ 2:å›å¤å¸–å­',
+  `post_title` varchar(50) NOT NULL COMMENT 'å¸–å­æ ‡é¢˜',
+  `post_text` text NOT NULL COMMENT 'å¸–å­å†…å®¹',
+  `create_time` date NOT NULL COMMENT 'åˆ›å»ºæ—¶é—´',
   PRIMARY KEY  (`post_id`),
   KEY `IDX_POST_TOPIC_ID` (`topic_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8 COMMENT='Ìû×Ó';
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8 COMMENT='å¸–å­';
 
 #
 # Dumping data for table t_post
 #
 
-INSERT INTO `t_post` VALUES (1,1,1,1,1,'Óı¶ù','ÅàÓı½¡¿µ´ÏÃ÷±¦±´£¬·ÖÏíÄúµÄ¾­ÑéĞÄµÃ\r\n','2011-05-07');
-INSERT INTO `t_post` VALUES (2,1,2,1,1,'È¤Óï\r\nÍ¯ÑÔ','´Ó±¦±¦Ñ¾Ñ¾Ñ§Óï¿ªÊ¼£¬×ÜÊÇ»áÃ°³öºÜ¶àÆæË¼ÃîÏë£¬×ÜÊÇ»áËµ³öÒ»Ğ©ÁîÄã¿ªĞÄ´óĞ¦µÄ»°£¬ÈÃÎÒÃÇÒ»Æğ¼ÇÂ¼£¬Ò»Æğ·ÖÏí','2011-05-07');
+INSERT INTO `t_post` VALUES (1,1,1,1,1,'è‚²å„¿','åŸ¹è‚²å¥åº·èªæ˜å®è´ï¼Œåˆ†äº«æ‚¨çš„ç»éªŒå¿ƒå¾—\r\n','2011-05-07');
+INSERT INTO `t_post` VALUES (2,1,2,1,1,'è¶£è¯­\r\nç«¥è¨€','ä»å®å®ä¸«ä¸«å­¦è¯­å¼€å§‹ï¼Œæ€»æ˜¯ä¼šå†’å‡ºå¾ˆå¤šå¥‡æ€å¦™æƒ³ï¼Œæ€»æ˜¯ä¼šè¯´å‡ºä¸€äº›ä»¤ä½ å¼€å¿ƒå¤§ç¬‘çš„è¯ï¼Œè®©æˆ‘ä»¬ä¸€èµ·è®°å½•ï¼Œä¸€èµ·åˆ†äº«','2011-05-07');
 INSERT INTO `t_post` VALUES (3,1,3,1,1,'test3','http://localhost/forum/boardManage.do?method=addTopicPage&boardId=1','2011-05-16');
 INSERT INTO `t_post` VALUES (4,1,4,1,1,'test5','http://localhost/forum/boardManage.do?method=addTopicPage&boardId=1','2011-05-16');
-INSERT INTO `t_post` VALUES (5,4,5,1,1,'¹ãÎª´«ËÌµÄÃÀµÂ¹ÊÊÂ','¹ãÎª´«ËÌµÄÃÀµÂ¹ÊÊÂ\r\n','2011-06-16');
-INSERT INTO `t_post` VALUES (6,0,5,1,2,'ÌúèÆÄ¥³ÉÕë','ÌúèÆÄ¥³ÉÕë............\r\n','2011-06-16');
-INSERT INTO `t_post` VALUES (7,4,6,1,1,'ÈÃ±¦±¦Ñ§»á×Ô¼º½²¹ÊÊÂµÄÃîÕĞÒ»','ÈÃ±¦±¦Ñ§»á×Ô¼º½²¹ÊÊÂµÄÃîÕĞ\r\n','2011-06-16');
-INSERT INTO `t_post` VALUES (8,4,7,1,1,'ÈÃ±¦±¦Ñ§»á×Ô¼º½²¹ÊÊÂµÄÃîÕĞ¶ş','ÈÃ±¦±¦Ñ§»á×Ô¼º½²¹ÊÊÂµÄÃîÕĞ','2011-06-16');
+INSERT INTO `t_post` VALUES (5,4,5,1,1,'å¹¿ä¸ºä¼ é¢‚çš„ç¾å¾·æ•…äº‹','å¹¿ä¸ºä¼ é¢‚çš„ç¾å¾·æ•…äº‹\r\n','2011-06-16');
+INSERT INTO `t_post` VALUES (6,0,5,1,2,'é“æµç£¨æˆé’ˆ','é“æµç£¨æˆé’ˆ............\r\n','2011-06-16');
+INSERT INTO `t_post` VALUES (7,4,6,1,1,'è®©å®å®å­¦ä¼šè‡ªå·±è®²æ•…äº‹çš„å¦™æ‹›ä¸€','è®©å®å®å­¦ä¼šè‡ªå·±è®²æ•…äº‹çš„å¦™æ‹›\r\n','2011-06-16');
+INSERT INTO `t_post` VALUES (8,4,7,1,1,'è®©å®å®å­¦ä¼šè‡ªå·±è®²æ•…äº‹çš„å¦™æ‹›äºŒ','è®©å®å®å­¦ä¼šè‡ªå·±è®²æ•…äº‹çš„å¦™æ‹›','2011-06-16');
 INSERT INTO `t_post` VALUES (14,5,14,1,1,'d','dddddddddddddd','2011-09-12');
 INSERT INTO `t_post` VALUES (15,5,15,1,1,'dad','sdfffffffffffffffffff','2011-09-12');
-INSERT INTO `t_post` VALUES (20,1,20,1,1,'²âÊÔ¡£¡£¡£¡£','²âÊÔ¡£¡£¡£¡£','2011-09-17');
-INSERT INTO `t_post` VALUES (21,1,21,1,1,'²âÊÔ¡£¡£¡£¡£','²âÊÔ¡£¡£¡£¡£','2011-09-17');
-INSERT INTO `t_post` VALUES (22,1,22,1,1,'Óı¶ù¾­Ñé','Óı¶ù¾­Ñé½»Á÷£¡£¡','2011-09-18');
-INSERT INTO `t_post` VALUES (23,1,23,1,1,'Óı¶ù¾­Ñé','Óı¶ù¾­Ñé½»Á÷£¡£¡','2011-09-18');
-INSERT INTO `t_post` VALUES (24,1,1,1,2,'Óı¶ù¾­Ñé','Óı¶ù¾­Ñé½»Á÷£¡£¡','2011-09-18');
+INSERT INTO `t_post` VALUES (20,1,20,1,1,'æµ‹è¯•ã€‚ã€‚ã€‚ã€‚','æµ‹è¯•ã€‚ã€‚ã€‚ã€‚','2011-09-17');
+INSERT INTO `t_post` VALUES (21,1,21,1,1,'æµ‹è¯•ã€‚ã€‚ã€‚ã€‚','æµ‹è¯•ã€‚ã€‚ã€‚ã€‚','2011-09-17');
+INSERT INTO `t_post` VALUES (22,1,22,1,1,'è‚²å„¿ç»éªŒ','è‚²å„¿ç»éªŒäº¤æµï¼ï¼','2011-09-18');
+INSERT INTO `t_post` VALUES (23,1,23,1,1,'è‚²å„¿ç»éªŒ','è‚²å„¿ç»éªŒäº¤æµï¼ï¼','2011-09-18');
+INSERT INTO `t_post` VALUES (24,1,1,1,2,'è‚²å„¿ç»éªŒ','è‚²å„¿ç»éªŒäº¤æµï¼ï¼','2011-09-18');
 
 #
 # Source for table t_topic
 #
 
 CREATE TABLE `t_topic` (
-  `topic_id` int(11) NOT NULL auto_increment COMMENT 'Ìû×ÓID',
-  `board_id` int(11) NOT NULL COMMENT 'ËùÊôÂÛÌ³',
-  `topic_title` varchar(100) NOT NULL default '' COMMENT 'Ìû×Ó±êÌâ',
-  `user_id` int(11) NOT NULL default '0' COMMENT '·¢±íÓÃ»§',
-  `create_time` date NOT NULL COMMENT '·¢±íÊ±¼ä',
-  `last_post` date NOT NULL COMMENT '×îºó»Ø¸´Ê±¼ä',
-  `topic_views` int(11) NOT NULL default '1' COMMENT 'ä¯ÀÀÊı',
-  `topic_replies` int(11) NOT NULL default '0' COMMENT '»Ø¸´Êı',
-  `digest` int(11) NOT NULL COMMENT '0:²»ÊÇ¾«»ª»°Ìâ 1:ÊÇ¾«»ª»°Ìâ',
+  `topic_id` int(11) NOT NULL auto_increment COMMENT 'å¸–å­ID',
+  `board_id` int(11) NOT NULL COMMENT 'æ‰€å±è®ºå›',
+  `topic_title` varchar(100) NOT NULL default '' COMMENT 'å¸–å­æ ‡é¢˜',
+  `user_id` int(11) NOT NULL default '0' COMMENT 'å‘è¡¨ç”¨æˆ·',
+  `create_time` date NOT NULL COMMENT 'å‘è¡¨æ—¶é—´',
+  `last_post` date NOT NULL COMMENT 'æœ€åå›å¤æ—¶é—´',
+  `topic_views` int(11) NOT NULL default '1' COMMENT 'æµè§ˆæ•°',
+  `topic_replies` int(11) NOT NULL default '0' COMMENT 'å›å¤æ•°',
+  `digest` int(11) NOT NULL COMMENT '0:ä¸æ˜¯ç²¾åè¯é¢˜ 1:æ˜¯ç²¾åè¯é¢˜',
   PRIMARY KEY  (`topic_id`),
   KEY `IDX_TOPIC_USER_ID` (`user_id`),
   KEY `IDX_TOPIC_TITLE` (`topic_title`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8 COMMENT='»°Ìâ';
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8 COMMENT='è¯é¢˜';
 
 #
 # Dumping data for table t_topic
@@ -147,29 +147,29 @@ INSERT INTO `t_topic` VALUES (1,1,'test',1,'2011-05-07','2011-09-18',0,1,1);
 INSERT INTO `t_topic` VALUES (2,1,'test2',1,'2011-05-07','2011-05-07',0,0,1);
 INSERT INTO `t_topic` VALUES (3,1,'test3',1,'2011-05-16','2011-05-16',0,0,0);
 INSERT INTO `t_topic` VALUES (4,1,'test5',1,'2011-05-16','2011-05-16',0,0,0);
-INSERT INTO `t_topic` VALUES (5,4,'¹ãÎª´«ËÌµÄÃÀµÂ¹ÊÊÂ',1,'2011-05-16','2011-05-16',0,1,1);
-INSERT INTO `t_topic` VALUES (6,4,'ÈÃ±¦±¦Ñ§»á×Ô¼º½²¹ÊÊÂµÄÃîÕĞÒ»',1,'2011-05-16','2011-05-16',0,0,0);
-INSERT INTO `t_topic` VALUES (7,4,'ÈÃ±¦±¦Ñ§»á×Ô¼º½²¹ÊÊÂµÄÃîÕĞ¶ş',1,'2011-05-16','2011-05-16',0,0,0);
+INSERT INTO `t_topic` VALUES (5,4,'å¹¿ä¸ºä¼ é¢‚çš„ç¾å¾·æ•…äº‹',1,'2011-05-16','2011-05-16',0,1,1);
+INSERT INTO `t_topic` VALUES (6,4,'è®©å®å®å­¦ä¼šè‡ªå·±è®²æ•…äº‹çš„å¦™æ‹›ä¸€',1,'2011-05-16','2011-05-16',0,0,0);
+INSERT INTO `t_topic` VALUES (7,4,'è®©å®å®å­¦ä¼šè‡ªå·±è®²æ•…äº‹çš„å¦™æ‹›äºŒ',1,'2011-05-16','2011-05-16',0,0,0);
 INSERT INTO `t_topic` VALUES (14,5,'d',1,'2011-09-12','2011-09-12',0,0,0);
 INSERT INTO `t_topic` VALUES (15,5,'dad',1,'2011-09-12','2011-09-12',0,0,0);
-INSERT INTO `t_topic` VALUES (20,1,'²âÊÔ¡£¡£¡£¡£',1,'2011-09-17','2011-09-17',0,0,0);
-INSERT INTO `t_topic` VALUES (21,1,'²âÊÔ¡£¡£¡£¡£',1,'2011-09-17','2011-09-17',0,0,0);
-INSERT INTO `t_topic` VALUES (22,1,'Óı¶ù¾­Ñé',1,'2011-09-18','2011-09-18',0,0,0);
-INSERT INTO `t_topic` VALUES (23,1,'Óı¶ù¾­Ñé',1,'2011-09-18','2011-09-18',0,0,0);
+INSERT INTO `t_topic` VALUES (20,1,'æµ‹è¯•ã€‚ã€‚ã€‚ã€‚',1,'2011-09-17','2011-09-17',0,0,0);
+INSERT INTO `t_topic` VALUES (21,1,'æµ‹è¯•ã€‚ã€‚ã€‚ã€‚',1,'2011-09-17','2011-09-17',0,0,0);
+INSERT INTO `t_topic` VALUES (22,1,'è‚²å„¿ç»éªŒ',1,'2011-09-18','2011-09-18',0,0,0);
+INSERT INTO `t_topic` VALUES (23,1,'è‚²å„¿ç»éªŒ',1,'2011-09-18','2011-09-18',0,0,0);
 
 #
 # Source for table t_user
 #
 
 CREATE TABLE `t_user` (
-  `user_id` int(11) NOT NULL auto_increment COMMENT 'ÓÃ»§Id',
-  `user_name` varchar(30) NOT NULL COMMENT 'ÓÃ»§Ãû',
-  `password` varchar(30) NOT NULL default '' COMMENT 'ÃÜÂë',
-  `user_type` tinyint(4) NOT NULL default '1' COMMENT '1:ÆÕÍ¨ÓÃ»§ 2:¹ÜÀíÔ±',
-  `locked` tinyint(4) NOT NULL default '0' COMMENT '0:Î´Ëø¶¨ 1:Ëø¶¨',
-  `credit` int(11) default NULL COMMENT '»ı·Ö',
-  `last_visit` datetime default NULL COMMENT '×îºóµÇÂ½Ê±¼ä',
-  `last_ip` varchar(20) default NULL COMMENT '×îºóµÇÂ½IP',
+  `user_id` int(11) NOT NULL auto_increment COMMENT 'ç”¨æˆ·Id',
+  `user_name` varchar(30) NOT NULL COMMENT 'ç”¨æˆ·å',
+  `password` varchar(30) NOT NULL default '' COMMENT 'å¯†ç ',
+  `user_type` tinyint(4) NOT NULL default '1' COMMENT '1:æ™®é€šç”¨æˆ· 2:ç®¡ç†å‘˜',
+  `locked` tinyint(4) NOT NULL default '0' COMMENT '0:æœªé”å®š 1:é”å®š',
+  `credit` int(11) default NULL COMMENT 'ç§¯åˆ†',
+  `last_visit` datetime default NULL COMMENT 'æœ€åç™»é™†æ—¶é—´',
+  `last_ip` varchar(20) default NULL COMMENT 'æœ€åç™»é™†IP',
   PRIMARY KEY  (`user_id`),
   KEY `AK_AK_USER_USER_NAME` (`user_name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;

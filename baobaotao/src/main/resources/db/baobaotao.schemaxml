@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemadesigner version="6.5">
+<source>
+<database charset="utf8" collation="utf8_general_ci">baobaotao</database>
+</source>
+<canvas zoom="100">
+<tables>
+<table name="t_board" view="standard">
+<left>37</left>
+<top>50</top>
+<width>223</width>
+<height>143</height>
+<sql_create_table>CREATE TABLE `t_board` (
+  `board_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '论坛版块ID',
+  `board_name` varchar(150) NOT NULL DEFAULT '' COMMENT '论坛版块名',
+  `board_desc` varchar(255) DEFAULT NULL COMMENT '论坛版块描述',
+  `topic_num` int(11) NOT NULL DEFAULT '0' COMMENT '帖子数目',
+  PRIMARY KEY (`board_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 DELAY_KEY_WRITE=1</sql_create_table>
+</table>
+<table name="t_board_manager" view="standard">
+<left>446</left>
+<top>30</top>
+<width>164</width>
+<height>109</height>
+<sql_create_table>CREATE TABLE `t_board_manager` (
+  `board_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  PRIMARY KEY (`board_id`,`user_id`),
+  KEY `FK_t_board_manager_t_user` (`user_id`),
+  CONSTRAINT `FK_t_board_manager_t_user` FOREIGN KEY (`user_id`) REFERENCES `t_user` (`user_id`),
+  CONSTRAINT `FK_t_board_manager_t_board` FOREIGN KEY (`board_id`) REFERENCES `t_board` (`board_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8</sql_create_table>
+</table>
+<table name="t_user" view="standard">
+<left>551</left>
+<top>344</top>
+<width>265</width>
+<height>177</height>
+<sql_create_table>CREATE TABLE `t_user` (
+  `user_id` int(11) NOT NULL COMMENT '用户ID',
+  `user_name` varchar(30) NOT NULL COMMENT '用户名，该列建立索引',
+  `password` varchar(30) NOT NULL DEFAULT '' COMMENT '密码',
+  `user_type` tinyint(4) NOT NULL DEFAULT '1' COMMENT '1:普通用户 2:管理员',
+  `locked` tinyint(4) NOT NULL DEFAULT '0' COMMENT '0:未锁定 1:锁定',
+  `credit` int(11) DEFAULT NULL COMMENT '积分',
+  PRIMARY KEY (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8</sql_create_table>
+</table>
+<table name="t_login_log" view="standard">
+<left>7</left>
+<top>398</top>
+<width>228</width>
+<height>143</height>
+<sql_create_table>CREATE TABLE `t_login_log` (
+  `login_log_id` int(11) NOT NULL COMMENT '日志ID',
+  `user_id` int(11) NOT NULL DEFAULT '0' COMMENT '发表者ID',
+  `ip` varchar(30) NOT NULL COMMENT '登录IP',
+  `login_datetime` datetime NOT NULL COMMENT '登录时间',
+  PRIMARY KEY (`login_log_id`),
+  KEY `FK_t_login_log_t_user` (`user_id`),
+  CONSTRAINT `FK_t_login_log_t_user` FOREIGN KEY (`user_id`) REFERENCES `t_user` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8</sql_create_table>
+</table>
+<table name="t_topic" view="standard">
+<left>693</left>
+<top>36</top>
+<width>223</width>
+<height>228</height>
+<sql_create_table>CREATE TABLE `t_topic` (
+  `topic_id` int(11) NOT NULL COMMENT '帖子ID',
+  `board_id` int(11) NOT NULL COMMENT '所属论坛',
+  `topic_title` varchar(100) NOT NULL DEFAULT '' COMMENT '帖子标题，该列建立索引',
+  `user_id` int(11) NOT NULL DEFAULT '0' COMMENT '发表用户，该列建立索引',
+  `create_time` datetime NOT NULL COMMENT '发表时间',
+  `last_post` datetime NOT NULL COMMENT '最后回复时间',
+  `topic_views` int(11) NOT NULL DEFAULT '1' COMMENT '浏览数',
+  `topic_replies` int(11) NOT NULL DEFAULT '0' COMMENT '回复数',
+  `digest` int(11) NOT NULL DEFAULT '0' COMMENT '0:不是精华话题 1:是精华话题',
+  PRIMARY KEY (`topic_id`),
+  KEY `FK_t_topic_t_user` (`user_id`),
+  KEY `FK_t_topic_t_board` (`board_id`),
+  CONSTRAINT `FK_t_topic_t_board` FOREIGN KEY (`board_id`) REFERENCES `t_board` (`board_id`),
+  CONSTRAINT `FK_t_topic_t_user` FOREIGN KEY (`user_id`) REFERENCES `t_user` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8</sql_create_table>
+</table>
+<table name="t_post" view="standard">
+<left>297</left>
+<top>172</top>
+<width>212</width>
+<height>211</height>
+<sql_create_table>CREATE TABLE `t_post` (
+  `post_id` int(11) NOT NULL COMMENT '帖子ID',
+  `board_id` int(11) NOT NULL DEFAULT '0' COMMENT '论坛ID',
+  `topic_id` int(11) NOT NULL DEFAULT '0' COMMENT '话题ID，该列建立索引',
+  `user_id` int(11) NOT NULL DEFAULT '0' COMMENT '发表者ID',
+  `post_type` tinyint(4) NOT NULL DEFAULT '2' COMMENT '帖子类型 1:主贴子 2:回复帖子',
+  `post_title` varchar(50) NOT NULL COMMENT '帖子标题',
+  `post_text` text NOT NULL COMMENT '帖子内容',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  PRIMARY KEY (`post_id`),
+  KEY `FK_t_post_t_board` (`board_id`),
+  KEY `FK_t_post_t_user` (`user_id`),
+  KEY `FK_t_post_t_topic` (`topic_id`),
+  CONSTRAINT `FK_t_post_t_topic` FOREIGN KEY (`topic_id`) REFERENCES `t_topic` (`topic_id`),
+  CONSTRAINT `FK_t_post_t_board` FOREIGN KEY (`board_id`) REFERENCES `t_board` (`board_id`),
+  CONSTRAINT `FK_t_post_t_user` FOREIGN KEY (`user_id`) REFERENCES `t_user` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8</sql_create_table>
+</table>
+</tables>
+</canvas>
+</schemadesigner>
